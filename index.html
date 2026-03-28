@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="APEX Real Estate — Premium agencija za nekretnine u Novom Sadu. Prodaja, rentanje, novogradnja, starogradnja, pravna pomoć i konsultacije.">
+    <title>APEX Real Estate | Novi Sad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-logo">APEX</div>
+            <div class="preloader-bar">
+                <div class="preloader-progress" id="preloaderProgress"></div>
+            </div>
+            <div class="preloader-text" id="preloaderText">Učitavanje... 0%</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav id="mainNav">
+        <div class="nav-logo">
+            <span class="nav-logo-text">APEX</span>
+            <span class="nav-logo-sub">REAL ESTATE</span>
+        </div>
+        <div class="nav-links">
+            <a href="#about" class="nav-link">O nama</a>
+            <a href="#services" class="nav-link">Usluge</a>
+            <a href="#stats" class="nav-link">Rezultati</a>
+            <a href="#contact" class="nav-link">Kontakt</a>
+        </div>
+        <button class="nav-cta" id="navCta">Zakažite razgovor</button>
+        <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#about" class="mobile-link">O nama</a>
+        <a href="#services" class="mobile-link">Usluge</a>
+        <a href="#stats" class="mobile-link">Rezultati</a>
+        <a href="#contact" class="mobile-link">Kontakt</a>
+        <button class="mobile-cta">Zakažite razgovor</button>
+    </div>
+
+    <!-- Scroll-Based Video Section -->
+    <section id="hero">
+        <div class="scroll-container">
+            <div class="canvas-wrapper">
+                <canvas id="scrollCanvas"></canvas>
+                
+                <!-- Text Overlays -->
+                <div class="overlay-text phase-1" id="phase1">
+                    <div class="overlay-logo">APEX</div>
+                    <div class="overlay-sub">REAL ESTATE</div>
+                    <div class="overlay-line"></div>
+                </div>
+
+                <div class="overlay-text phase-2" id="phase2">
+                    <p class="overlay-headline">Novi Sad nije samo grad.</p>
+                    <p class="overlay-headline-accent">To je vaš novi početak.</p>
+                </div>
+
+                <div class="overlay-text phase-3" id="phase3">
+                    <p class="overlay-services-title">Novogradnja & Starogradnja</p>
+                    <div class="overlay-services-list">
+                        <span>Prodaja</span>
+                        <span class="dot">•</span>
+                        <span>Rentanje</span>
+                        <span class="dot">•</span>
+                        <span>Konsultacije</span>
+                    </div>
+                </div>
+
+                <div class="overlay-text phase-4" id="phase4">
+                    <p class="overlay-premium">Premium nekretnine</p>
+                    <p class="overlay-premium-sub">za premium život.</p>
+                </div>
+
+                <div class="overlay-text phase-5" id="phase5">
+                    <p class="overlay-final-tagline">Vaš dom. Naša misija.</p>
+                    <div class="overlay-final-logo">APEX</div>
+                    <div class="overlay-final-sub">REAL ESTATE · NOVI SAD</div>
+                </div>
+
+                <!-- Scroll Indicator -->
+                <div class="scroll-indicator" id="scrollIndicator">
+                    <div class="scroll-mouse">
+                        <div class="scroll-wheel"></div>
+                    </div>
+                    <span>Skrolujte nadole</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Content Section (after scroll video) -->
+    <section id="about" class="content-section">
+        <div class="section-container">
+            <div class="section-tag">O NAMA</div>
+            <h2 class="section-title">Više od agencije.<br><span class="gold">Partner za život.</span></h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p class="about-lead">APEX Real Estate je premium agencija za nekretnine bazirana u Novom Sadu, posvećena pronalaženju savršenog prostora za svakog klijenta.</p>
+                    <p>Sa dugogodišnjim iskustvom na tržištu nekretnina Vojvodine, naš tim stručnjaka pokriva sve aspekte kupoprodaje — od novogradnje do starogradnje, od rentiranja do pravne pomoći. Svaki projekat tretiramo kao partnerstvo, jer verujemo da pronalaženje doma nije samo transakcija — to je životna odluka.</p>
+                    <p>Naša misija je jednostavna: dovesti vas od vizije do ključa u ruci, sa punom podrškom na svakom koraku.</p>
+                </div>
+                <div class="about-values">
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h3>Poverenje</h3>
+                        <p>Transparentnost u svakom koraku, pravna sigurnost garantovana.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        </div>
+                        <h3>Ekspertiza</h3>
+                        <p>Duboko poznavanje tržišta Novog Sada i okoline.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                        </div>
+                        <h3>Posvećenost</h3>
+                        <p>Svaki klijent je jedinstven, svaki dom je poseban.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="content-section services-section">
+        <div class="section-container">
+            <div class="section-tag">USLUGE</div>
+            <h2 class="section-title">Kompletna podrška.<br><span class="gold">Od ideje do ključa.</span></h2>
+            <div class="services-grid">
+                <div class="service-card" id="service-1">
+                    <div class="service-number">01</div>
+                    <h3>Prodaja nekretnina</h3>
+                    <p>Profesionalna prezentacija i plasiranje vaše nekretnine na tržištu. Foto, video, 3D ture i ciljani marketing.</p>
+                    <div class="service-tags">
+                        <span>Novogradnja</span>
+                        <span>Starogradnja</span>
+                        <span>Stanovi</span>
+                        <span>Kuće</span>
+                    </div>
+                </div>
+                <div class="service-card" id="service-2">
+                    <div class="service-number">02</div>
+                    <h3>Kupovina nekretnina</h3>
+                    <p>Pomagamo vam da pronađete idealan prostor po vašoj meri. Analiza tržišta, pregovaranje i kompletna podrška.</p>
+                    <div class="service-tags">
+                        <span>Selekcija</span>
+                        <span>Obilazak</span>
+                        <span>Pregovori</span>
+                        <span>Zaključenje</span>
+                    </div>
+                </div>
+                <div class="service-card" id="service-3">
+                    <div class="service-number">03</div>
+                    <h3>Izdavanje & Rentanje</h3>
+                    <p>Kratkoročno i dugoročno izdavanje. Pronalazimo pouzdane zakupce i upravljamo vašom imovinom.</p>
+                    <div class="service-tags">
+                        <span>Dugoročno</span>
+                        <span>Kratkoročno</span>
+                        <span>Upravljanje</span>
+                    </div>
+                </div>
+                <div class="service-card" id="service-4">
+                    <div class="service-number">04</div>
+                    <h3>Pravna pomoć</h3>
+                    <p>Pravna verifikacija, ugovaranje, overa dokumenata i kompletna administrativna podrška.</p>
+                    <div class="service-tags">
+                        <span>Ugovori</span>
+                        <span>Provera</span>
+                        <span>Dokumentacija</span>
+                    </div>
+                </div>
+                <div class="service-card" id="service-5">
+                    <div class="service-number">05</div>
+                    <h3>Konsultacije</h3>
+                    <p>Stručni saveti za investicije u nekretnine, procena vrednosti i analiza potencijala lokacije.</p>
+                    <div class="service-tags">
+                        <span>Procena</span>
+                        <span>Investicije</span>
+                        <span>Analiza</span>
+                    </div>
+                </div>
+                <div class="service-card" id="service-6">
+                    <div class="service-number">06</div>
+                    <h3>Premium projekti</h3>
+                    <p>Ekskluzivni pristup premium novogradnjama i specijalnim projektima pre nego što stignu na tržište.</p>
+                    <div class="service-tags">
+                        <span>Ekskluzivno</span>
+                        <span>Off-market</span>
+                        <span>VIP</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section id="stats" class="content-section stats-section">
+        <div class="section-container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="350">0</div>
+                    <div class="stat-suffix">+</div>
+                    <div class="stat-label">Prodatih nekretnina</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="98">0</div>
+                    <div class="stat-suffix">%</div>
+                    <div class="stat-label">Zadovoljnih klijenata</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="12">0</div>
+                    <div class="stat-suffix"></div>
+                    <div class="stat-label">Godina iskustva</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="45">0</div>
+                    <div class="stat-suffix">M€</div>
+                    <div class="stat-label">Vrednost transakcija</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial / Quote -->
+    <section class="content-section quote-section">
+        <div class="section-container">
+            <blockquote class="big-quote">
+                <p>"Od panorame Novog Sada do ključa u vašoj ruci — APEX je vaš partner za svaku životnu odluku vezanu za nekretnine."</p>
+                <cite>— APEX Tim</cite>
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="content-section contact-section">
+        <div class="section-container">
+            <div class="section-tag">KONTAKT</div>
+            <h2 class="section-title">Razgovarajmo o<br><span class="gold">vašem novom domu.</span></h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <div>
+                            <h4>Lokacija</h4>
+                            <p>Bulevar Oslobođenja 76<br>21000 Novi Sad, Srbija</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </div>
+                        <div>
+                            <h4>Telefon</h4>
+                            <p>064 333 5757</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>apex@realestate.rs</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </div>
+                        <div>
+                            <h4>Radno vreme</h4>
+                            <p>Pon – Pet: 09:00 – 18:00<br>Sub: 10:00 – 14:00</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="formName" placeholder="Vaše ime i prezime" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <input type="email" id="formEmail" placeholder="Email adresa" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="formPhone" placeholder="Telefon">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <select id="formService">
+                            <option value="" disabled selected>Izaberite uslugu</option>
+                            <option value="prodaja">Prodaja nekretnine</option>
+                            <option value="kupovina">Kupovina nekretnine</option>
+                            <option value="rentanje">Izdavanje / Rentanje</option>
+                            <option value="pravna">Pravna pomoć</option>
+                            <option value="konsultacije">Konsultacije</option>
+                            <option value="ostalo">Ostalo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="formMessage" placeholder="Vaša poruka..." rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">
+                        <span>Pošaljite poruku</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Property Search -->
+    <button class="ai-fab" id="aiFab" aria-label="AI Pretraga">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a4 4 0 0 1 4 4v1a1 1 0 0 0 1 1h1a4 4 0 0 1 0 8h-1a1 1 0 0 0-1 1v1a4 4 0 0 1-8 0v-1a1 1 0 0 0-1-1H6a4 4 0 0 1 0-8h1a1 1 0 0 0 1-1V6a4 4 0 0 1 4-4z"/>
+            <circle cx="12" cy="12" r="2"/>
+        </svg>
+        <span class="ai-fab-label">AI Pretraga</span>
+    </button>
+
+    <!-- AI Overlay -->
+    <div class="ai-overlay" id="aiOverlay"></div>
+
+    <!-- AI Panel -->
+    <div class="ai-panel" id="aiPanel">
+        <div class="ai-panel-header">
+            <div class="ai-panel-brand">
+                <div class="ai-brand-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 2a4 4 0 0 1 4 4v1a1 1 0 0 0 1 1h1a4 4 0 0 1 0 8h-1a1 1 0 0 0-1 1v1a4 4 0 0 1-8 0v-1a1 1 0 0 0-1-1H6a4 4 0 0 1 0-8h1a1 1 0 0 0 1-1V6a4 4 0 0 1 4-4z"/>
+                        <circle cx="12" cy="12" r="2"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="ai-brand-name">APEX AI Asistent</div>
+                    <div class="ai-brand-status"><span class="ai-status-dot"></span>Online — spreman za pretragu</div>
+                </div>
+            </div>
+            <button class="ai-panel-close" id="aiClose" aria-label="Zatvori">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </div>
+
+        <div class="ai-chat-area" id="aiChatArea">
+            <!-- Messages will be injected here -->
+        </div>
+
+        <div class="ai-input-area">
+            <div class="ai-suggestions" id="aiSuggestions">
+                <button class="ai-suggestion" data-query="Tražim dvosoban stan na Grbavici">🏠 Dvosoban na Grbavici</button>
+                <button class="ai-suggestion" data-query="Penthouse sa pogledom na Dunav">🌊 Penthouse uz Dunav</button>
+                <button class="ai-suggestion" data-query="Novogradnja do 80000 evra">🏗️ Novogradnja do 80k€</button>
+                <button class="ai-suggestion" data-query="Stan za rentanje u centru">🔑 Renta u centru</button>
+            </div>
+            <form class="ai-input-form" id="aiForm">
+                <input type="text" class="ai-input" id="aiInput" placeholder="Opišite kakav stan tražite..." autocomplete="off">
+                <button type="submit" class="ai-send" id="aiSend" aria-label="Pošalji">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">APEX</div>
+                    <div class="footer-logo-sub">REAL ESTATE</div>
+                    <p class="footer-desc">Premium agencija za nekretnine u Novom Sadu. Prodaja, kupovina, rentanje i pravna pomoć.</p>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Navigacija</h4>
+                    <a href="#about">O nama</a>
+                    <a href="#services">Usluge</a>
+                    <a href="#stats">Rezultati</a>
+                    <a href="#contact">Kontakt</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Usluge</h4>
+                    <a href="#services">Prodaja</a>
+                    <a href="#services">Kupovina</a>
+                    <a href="#services">Rentanje</a>
+                    <a href="#services">Pravna pomoć</a>
+                </div>
+                <div class="footer-links-group">
+                    <h4>Društvene mreže</h4>
+                    <a href="#" target="_blank">Instagram</a>
+                    <a href="#" target="_blank">Facebook</a>
+                    <a href="#" target="_blank">LinkedIn</a>
+                    <a href="#" target="_blank">YouTube</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 APEX Real Estate. Sva prava zadržana.</p>
+                <p>Novi Sad, Srbija</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
