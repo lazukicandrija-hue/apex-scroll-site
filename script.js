@@ -75,8 +75,10 @@
     // ─── Canvas Sizing ───
     function resizeCanvas() {
         const dpr = state.dpr;
-        const w = window.innerWidth;
-        const h = window.innerHeight;
+        // Use visualViewport for accurate mobile dimensions (handles address bar)
+        const vv = window.visualViewport;
+        const w = (vv && isMobile) ? vv.width : window.innerWidth;
+        const h = (vv && isMobile) ? vv.height : window.innerHeight;
 
         // Only resize if dimensions actually changed
         if (state.canvasWidth === w && state.canvasHeight === h) return;
@@ -383,6 +385,14 @@
         window.addEventListener('orientationchange', () => {
             setTimeout(resizeCanvas, 200);
         }, { passive: true });
+
+        // Handle mobile address bar show/hide via visualViewport
+        if (window.visualViewport && isMobile) {
+            window.visualViewport.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(resizeCanvas, 100);
+            }, { passive: true });
+        }
     }
 
     // ─── Navigation ───

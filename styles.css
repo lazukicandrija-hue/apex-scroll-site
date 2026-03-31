@@ -33,6 +33,7 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
 }
 
 body {
@@ -311,6 +312,9 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    max-width: 100vw;
+    max-height: 100vh;
+    max-height: 100dvh;
     will-change: contents;
 }
 
@@ -1945,13 +1949,14 @@ body {
     }
 
     .scroll-container {
-        height: 350vh;
+        height: 500vh;
     }
 
     /* ─── Mobile Overlay Text Sizing ─── */
     .canvas-wrapper {
         height: 100vh;
         height: 100dvh;
+        overflow: hidden;
     }
 
     .overlay-text {
@@ -2046,6 +2051,29 @@ body {
     }
 
     /* Nekretnine mobile */
+    #nekretnine {
+        overflow-x: hidden;
+    }
+
+    .nek-category-tabs {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        gap: 0.25rem;
+    }
+
+    .nek-category-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nek-cat-tab {
+        padding: 0.55rem 1rem;
+        font-size: 0.72rem;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
     .nek-ai-search-inner {
         padding: 0.35rem 0.35rem 0.35rem 0.85rem;
     }
