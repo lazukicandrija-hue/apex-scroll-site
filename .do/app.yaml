@@ -1,0 +1,11 @@
+name: apex-real-estate
+region: fra
+static_sites:
+  - name: apex-site
+    github:
+      repo: lazukicandrija-hue/apex-scroll-site
+      branch: main
+      deploy_on_push: true
+    source_dir: /
+    index_document: index.html
+    output_dir: /

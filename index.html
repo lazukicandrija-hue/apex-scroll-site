@@ -2,7 +2,7 @@
 <html lang="sr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5">
     <meta name="description" content="APEX Real Estate — Premium agencija za nekretnine u Novom Sadu. Prodaja, rentanje, novogradnja, starogradnja, pravna pomoć i konsultacije.">
     <title>APEX Real Estate | Novi Sad</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -31,6 +31,7 @@
         <div class="nav-links">
             <a href="#about" class="nav-link">O nama</a>
             <a href="#services" class="nav-link">Usluge</a>
+            <a href="#nekretnine" class="nav-link">Nekretnine</a>
             <a href="#stats" class="nav-link">Rezultati</a>
             <a href="#contact" class="nav-link">Kontakt</a>
         </div>
@@ -44,6 +45,7 @@
     <div class="mobile-menu" id="mobileMenu">
         <a href="#about" class="mobile-link">O nama</a>
         <a href="#services" class="mobile-link">Usluge</a>
+        <a href="#nekretnine" class="mobile-link">Nekretnine</a>
         <a href="#stats" class="mobile-link">Rezultati</a>
         <a href="#contact" class="mobile-link">Kontakt</a>
         <button class="mobile-cta">Zakažite razgovor</button>
@@ -84,7 +86,7 @@
                 </div>
 
                 <div class="overlay-text phase-5" id="phase5">
-                    <p class="overlay-final-tagline">Vaš dom. Naša misija.</p>
+                    <p class="overlay-final-tagline">Od ideje do Ključa.</p>
                     <div class="overlay-final-logo">APEX</div>
                     <div class="overlay-final-sub">REAL ESTATE · NOVI SAD</div>
                 </div>
@@ -96,6 +98,147 @@
                     </div>
                     <span>Skrolujte nadole</span>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nekretnine Section -->
+    <section id="nekretnine" class="content-section nekretnine-section">
+        <div class="section-container">
+            <div class="section-tag">NEKRETNINE</div>
+            <h2 class="section-title">Naša ponuda.<br><span class="gold">Vaš novi dom.</span></h2>
+
+            <!-- AI Inline Search -->
+            <div class="nek-ai-search" id="nekAISearch">
+                <div class="nek-ai-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
+                    AI PRETRAGA
+                </div>
+                <div class="nek-ai-search-inner">
+                    <div class="nek-ai-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M12 2a4 4 0 0 1 4 4v1a1 1 0 0 0 1 1h1a4 4 0 0 1 0 8h-1a1 1 0 0 0-1 1v1a4 4 0 0 1-8 0v-1a1 1 0 0 0-1-1H6a4 4 0 0 1 0-8h1a1 1 0 0 0 1-1V6a4 4 0 0 1 4-4z"/>
+                            <circle cx="12" cy="12" r="2"/>
+                        </svg>
+                    </div>
+                    <input type="text" class="nek-ai-input" id="nekAIInput" placeholder="Opišite kakvu nekretninu tražite... npr. 'dvosoban stan na Grbavici do 80.000€'" autocomplete="off">
+                    <button class="nek-ai-btn" id="nekAIBtn" aria-label="Pretraži">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    </button>
+                </div>
+                <div class="nek-ai-tags">
+                    <button class="nek-ai-tag" data-query="Dvosoban stan na Grbavici">🏠 Dvosoban Grbavica</button>
+                    <button class="nek-ai-tag" data-query="Penthouse sa pogledom na Dunav">🌊 Penthouse uz Dunav</button>
+                    <button class="nek-ai-tag" data-query="Novogradnja do 80000 evra">🏗️ Novogradnja do 80k€</button>
+                    <button class="nek-ai-tag" data-query="Stan za rentanje u centru">🔑 Renta u centru</button>
+                    <button class="nek-ai-tag" data-query="Trosoban za izdavanje na Limanu">📋 Izdavanje Liman</button>
+                    <button class="nek-ai-tag" data-query="Kuća sa baštom">🏡 Kuća sa baštom</button>
+                </div>
+            </div>
+
+            <!-- Prodaja / Izdavanje Tabs -->
+            <div class="nek-category-tabs" id="nekCategoryTabs">
+                <button class="nek-cat-tab active" data-category="sve">Sve</button>
+                <button class="nek-cat-tab" data-category="prodaja">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    Prodaja
+                </button>
+                <button class="nek-cat-tab" data-category="renta">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    Izdavanje
+                </button>
+                <button class="nek-cat-tab" data-category="novogradnja">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M2 20h20M5 20V8l7-5 7 5v12"/><rect x="9" y="13" width="6" height="7"/><line x1="12" y1="3" x2="12" y2="1"/></svg>
+                    Novogradnja
+                </button>
+            </div>
+
+            <!-- Filter Bar (CityExpert-inspired) -->
+            <div class="nek-filters" id="nekFilters">
+                <div class="nek-filters-row">
+                    <div class="nek-filter-pill" id="filterType">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="nek-filter-icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                        <select id="filterTypeSelect">
+                            <option value="">Tip</option>
+                            <option value="stan">Stan</option>
+                            <option value="kuća">Kuća</option>
+                        </select>
+                    </div>
+                    <div class="nek-filter-pill" id="filterLocation">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="nek-filter-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <select id="filterLocationSelect">
+                            <option value="">Lokacija</option>
+                            <option value="Centar">Centar</option>
+                            <option value="Grbavica">Grbavica</option>
+                            <option value="Liman">Liman</option>
+                            <option value="Novo Naselje">Novo Naselje</option>
+                            <option value="Detelinara">Detelinara</option>
+                            <option value="Telep">Telep</option>
+                            <option value="Podbara">Podbara</option>
+                            <option value="Petrovaradin">Petrovaradin</option>
+                            <option value="Sremska Kamenica">Sr. Kamenica</option>
+                            <option value="Sremski Karlovci">Sr. Karlovci</option>
+                        </select>
+                    </div>
+                    <div class="nek-filter-pill" id="filterPrice">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="nek-filter-icon"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        <select id="filterPriceSelect">
+                            <option value="">Cena</option>
+                            <option value="0-60000">Do 60.000€</option>
+                            <option value="60000-100000">60.000 - 100.000€</option>
+                            <option value="100000-200000">100.000 - 200.000€</option>
+                            <option value="200000-999999">200.000€+</option>
+                            <option value="renta">Izdavanje</option>
+                        </select>
+                    </div>
+                    <div class="nek-filter-pill" id="filterRooms">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="nek-filter-icon"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                        <select id="filterRoomsSelect">
+                            <option value="">Struktura</option>
+                            <option value="1">Garsonjera / 1 soba</option>
+                            <option value="2">Dvosoban</option>
+                            <option value="3">Trosoban</option>
+                            <option value="4">4+ soba</option>
+                        </select>
+                    </div>
+                    <div class="nek-filter-pill" id="filterConstruction">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="nek-filter-icon"><path d="M2 20h20M4 20V8l8-6 8 6v12M9 20v-6h6v6"/></svg>
+                        <select id="filterConstructionSelect">
+                            <option value="">Gradnja</option>
+                            <option value="novogradnja">Novogradnja</option>
+                            <option value="starogradnja">Starogradnja</option>
+                        </select>
+                    </div>
+                    <button class="nek-filter-reset" id="filterReset">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        Resetuj
+                    </button>
+                </div>
+                <div class="nek-results-meta" id="nekResultsMeta">
+                    <span class="nek-results-count" id="nekResultsCount">Prikazano: <strong>18</strong> nekretnina</span>
+                    <div class="nek-results-sort">
+                        <select id="nekSortSelect">
+                            <option value="default">Preporučeno</option>
+                            <option value="price-asc">Cena: niža prvo</option>
+                            <option value="price-desc">Cena: viša prvo</option>
+                            <option value="size-desc">Površina: veća prvo</option>
+                            <option value="newest">Najnovije</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property Grid -->
+            <div class="nek-grid" id="nekGrid">
+                <!-- Cards are injected by JS -->
+            </div>
+
+            <!-- Load More -->
+            <div class="nek-load-more-wrap" id="nekLoadMoreWrap">
+                <button class="nek-load-more" id="nekLoadMore">
+                    <span>Prikaži sve nekretnine</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
             </div>
         </div>
     </section>
@@ -215,22 +358,17 @@
         <div class="section-container">
             <div class="stats-grid">
                 <div class="stat-item">
-                    <div class="stat-number" data-target="350">0</div>
+                    <div class="stat-number" data-target="100">0</div>
                     <div class="stat-suffix">+</div>
                     <div class="stat-label">Prodatih nekretnina</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" data-target="98">0</div>
-                    <div class="stat-suffix">%</div>
-                    <div class="stat-label">Zadovoljnih klijenata</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number" data-target="12">0</div>
+                    <div class="stat-number" data-target="3">0</div>
                     <div class="stat-suffix"></div>
                     <div class="stat-label">Godina iskustva</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number" data-target="45">0</div>
+                    <div class="stat-number" data-target="10">0</div>
                     <div class="stat-suffix">M€</div>
                     <div class="stat-label">Vrednost transakcija</div>
                 </div>
@@ -261,7 +399,7 @@
                         </div>
                         <div>
                             <h4>Lokacija</h4>
-                            <p>Bulevar Oslobođenja 76<br>21000 Novi Sad, Srbija</p>
+                            <p>Mičurinova 74<br>21000 Novi Sad, Srbija</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -279,7 +417,7 @@
                         </div>
                         <div>
                             <h4>Email</h4>
-                            <p>apex@realestate.rs</p>
+                            <p>office@apexrealestate.rs</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -392,6 +530,7 @@
                     <h4>Navigacija</h4>
                     <a href="#about">O nama</a>
                     <a href="#services">Usluge</a>
+                    <a href="#nekretnine">Nekretnine</a>
                     <a href="#stats">Rezultati</a>
                     <a href="#contact">Kontakt</a>
                 </div>

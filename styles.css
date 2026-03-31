@@ -293,7 +293,7 @@ body {
 }
 
 .scroll-container {
-    height: 600vh; /* This creates the scroll space for 240 frames */
+    height: 600vh;
 }
 
 .canvas-wrapper {
@@ -301,7 +301,9 @@ body {
     top: 0;
     width: 100%;
     height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
     overflow: hidden;
+    will-change: contents;
 }
 
 #scrollCanvas {
@@ -309,7 +311,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* Sized dynamically via JS to cover viewport */
+    will-change: contents;
 }
 
 /* ─── Text Overlays ─── */
@@ -323,8 +325,11 @@ body {
     text-align: center;
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.6s var(--ease-out-expo);
     z-index: 10;
+    will-change: opacity, transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    padding: 1rem;
 }
 
 /* Dark scrim behind all overlay text for legibility */
@@ -761,6 +766,659 @@ body {
     border: 1px solid rgba(200, 165, 92, 0.2);
 }
 
+/* ─── Nekretnine Section ─── */
+.nekretnine-section {
+    background: var(--black);
+}
+
+/* ─── AI Inline Search ─── */
+.nek-ai-search {
+    margin-bottom: 2.5rem;
+}
+
+.nek-ai-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding: 0.35rem 0.9rem;
+    background: linear-gradient(135deg, rgba(200, 165, 92, 0.12), rgba(200, 165, 92, 0.05));
+    border: 1px solid rgba(200, 165, 92, 0.25);
+    border-radius: 50px;
+    color: var(--gold);
+    font-family: var(--font-heading);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+}
+
+.nek-ai-label svg {
+    stroke: var(--gold);
+    animation: sparkle-pulse 2s ease-in-out infinite;
+}
+
+@keyframes sparkle-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.85); }
+}
+
+.nek-ai-search-inner {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: var(--black-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 60px;
+    padding: 0.4rem 0.4rem 0.4rem 1.25rem;
+    transition: all 0.4s var(--ease-out-expo);
+    position: relative;
+    overflow: hidden;
+}
+
+.nek-ai-search-inner::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 60px;
+    padding: 1px;
+    background: linear-gradient(135deg, transparent 30%, var(--gold) 50%, transparent 70%);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: xor;
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+}
+
+.nek-ai-search-inner:focus-within::before {
+    opacity: 1;
+}
+
+.nek-ai-search-inner:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px var(--gold-glow), 0 10px 40px rgba(200, 165, 92, 0.1);
+}
+
+.nek-ai-icon {
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+    color: var(--gold);
+    animation: aiIconSpin 8s linear infinite;
+}
+
+@keyframes aiIconSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.nek-ai-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.nek-ai-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.85rem 1rem;
+}
+
+.nek-ai-input::placeholder {
+    color: var(--white-muted);
+    font-size: 0.88rem;
+}
+
+.nek-ai-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    border: none;
+    color: var(--black);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.3s;
+}
+
+.nek-ai-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.nek-ai-btn:hover {
+    background: var(--gold-light);
+    transform: scale(1.08);
+    box-shadow: 0 4px 20px rgba(200, 165, 92, 0.3);
+}
+
+.nek-ai-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.nek-ai-tag {
+    font-size: 0.73rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 20px;
+    background: var(--black-surface);
+    border: 1px solid var(--glass-border);
+    color: var(--white-dim);
+    cursor: pointer;
+    font-family: var(--font-body);
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.nek-ai-tag:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: var(--gold-glow);
+    transform: translateY(-1px);
+}
+
+/* ─── Category Tabs (Prodaja / Izdavanje) ─── */
+.nek-category-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    background: var(--black-surface);
+    border-radius: 50px;
+    padding: 0.3rem;
+    width: fit-content;
+}
+
+.nek-cat-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 50px;
+    border: none;
+    background: transparent;
+    color: var(--white-muted);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.35s var(--ease-out-expo);
+    letter-spacing: 0.03em;
+}
+
+.nek-cat-tab svg {
+    flex-shrink: 0;
+}
+
+.nek-cat-tab:hover {
+    color: var(--white);
+}
+
+.nek-cat-tab.active {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color: var(--black);
+    font-weight: 600;
+    box-shadow: 0 2px 12px rgba(200, 165, 92, 0.25);
+}
+
+.nek-cat-tab.active svg {
+    stroke: var(--black);
+}
+
+/* ─── Filter Bar ─── */
+.nek-filters {
+    margin-bottom: 2rem;
+}
+
+.nek-filters-row {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.nek-filter-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: var(--black-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 0 1rem 0 0.75rem;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.nek-filter-pill:hover {
+    border-color: var(--gold);
+}
+
+.nek-filter-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--gold);
+}
+
+.nek-filter-pill select {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--white-dim);
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    padding: 0.65rem 0.5rem 0.65rem 0.25rem;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    min-width: 70px;
+}
+
+.nek-filter-pill select option {
+    background: var(--black-card);
+    color: var(--white);
+}
+
+.nek-filter-reset {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--white-muted);
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    padding: 0.55rem 0.85rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.nek-filter-reset svg {
+    width: 14px;
+    height: 14px;
+}
+
+.nek-filter-reset:hover {
+    color: var(--gold);
+    border-color: var(--glass-border);
+}
+
+.nek-results-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1rem;
+}
+
+.nek-results-count {
+    font-size: 0.82rem;
+    color: var(--white-muted);
+}
+
+.nek-results-count strong {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.nek-results-sort select {
+    background: transparent;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--white-dim);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    padding: 0.45rem 0.75rem;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+}
+
+.nek-results-sort select option {
+    background: var(--black-card);
+    color: var(--white);
+}
+
+/* ─── Property Grid ─── */
+.nek-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+/* ─── Property Card ─── */
+.nek-card {
+    background: var(--black-card);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.4s var(--ease-out-expo);
+    position: relative;
+    animation: nekCardIn 0.6s var(--ease-out-expo) both;
+}
+
+@keyframes nekCardIn {
+    from { opacity: 0; transform: translateY(24px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.nek-card:hover {
+    border-color: rgba(200, 165, 92, 0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(200, 165, 92, 0.06);
+}
+
+.nek-card-img {
+    width: 100%;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.nek-card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s var(--ease-out-expo);
+}
+
+.nek-card:hover .nek-card-img img {
+    transform: scale(1.06);
+}
+
+.nek-card-id {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--white);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    backdrop-filter: blur(4px);
+}
+
+.nek-card-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 3rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+}
+
+.nek-card-badge.novogradnja {
+    background: rgba(76, 175, 80, 0.9);
+    color: white;
+}
+
+.nek-card-badge.starogradnja {
+    background: rgba(255, 152, 0, 0.9);
+    color: white;
+}
+
+.nek-card-badge.renta {
+    background: rgba(66, 133, 244, 0.9);
+    color: white;
+}
+
+.nek-card-fav {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.65rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 2;
+}
+
+.nek-card-fav svg {
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: #333;
+    stroke-width: 2;
+    transition: all 0.3s;
+}
+
+.nek-card-fav.active svg {
+    fill: #E53935;
+    stroke: #E53935;
+}
+
+.nek-card-fav:hover {
+    transform: scale(1.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Card pricing area */
+.nek-card-price-area {
+    padding: 1rem 1.15rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.nek-card-price {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.nek-card-price small {
+    font-size: 0.7rem;
+    font-weight: 400;
+    color: var(--white-muted);
+}
+
+.nek-card-rate {
+    font-size: 0.65rem;
+    font-weight: 700;
+    background: rgba(229, 57, 53, 0.12);
+    color: #E53935;
+    border: 1px solid rgba(229, 57, 53, 0.25);
+    padding: 0.25rem 0.55rem;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+.nek-card-rate.renta-badge {
+    background: rgba(76, 175, 80, 0.12);
+    color: #66BB6A;
+    border-color: rgba(76, 175, 80, 0.25);
+}
+
+/* Card type label */
+.nek-card-type {
+    padding: 0 1.15rem;
+    font-size: 0.7rem;
+    color: var(--white-muted);
+    margin-bottom: 0.5rem;
+}
+
+.nek-card-type span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.nek-card-type .dot {
+    color: var(--glass-border);
+}
+
+/* Card body */
+.nek-card-body {
+    padding: 0 1.15rem 1rem;
+}
+
+.nek-card-location {
+    font-size: 0.85rem;
+    color: var(--white-dim);
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+}
+
+.nek-card-specs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.nek-card-spec {
+    font-size: 0.7rem;
+    color: var(--white-muted);
+    background: var(--black-surface);
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+/* ─── Load More ─── */
+.nek-load-more-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 2.5rem;
+}
+
+.nek-load-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.4s var(--ease-out-expo);
+}
+
+.nek-load-more svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s;
+}
+
+.nek-load-more:hover {
+    background: var(--gold);
+    color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(200, 165, 92, 0.25);
+}
+
+.nek-load-more:hover svg {
+    transform: translateY(3px);
+}
+
+/* Old nekretnine empty styles removed — now unused */
+.nekretnine-empty-icon {
+    width: 72px;
+    height: 72px;
+    color: var(--gold);
+    opacity: 0.5;
+    margin-bottom: 2rem;
+}
+
+.nekretnine-empty-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.nekretnine-empty-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 1rem;
+}
+
+.nekretnine-empty-text {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--white-muted);
+    max-width: 500px;
+    margin-bottom: 2.5rem;
+}
+
+.nekretnine-empty-features {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+}
+
+.nekretnine-feature {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--white-dim);
+    background: var(--black-card);
+    border: 1px solid var(--glass-border);
+    padding: 0.6rem 1.25rem;
+    transition: all 0.3s;
+}
+
+.nekretnine-feature:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.nekretnine-feature-icon {
+    font-size: 1.1rem;
+}
+
+.nekretnine-cta {
+    font-size: 0.8rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid var(--gold);
+    padding: 0.85rem 2rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.nekretnine-cta:hover {
+    background: var(--gold);
+    color: var(--black);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(200, 165, 92, 0.2);
+}
+
 /* ─── Stats Section ─── */
 .stats-section {
     background: linear-gradient(180deg, var(--black-light), var(--black));
@@ -1072,13 +1730,14 @@ body {
 /* ─── Scroll Animations (IntersectionObserver classes) ─── */
 .reveal {
     opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.8s var(--ease-out-expo);
+    transform: translate3d(0, 30px, 0);
+    transition: opacity 0.7s var(--ease-out-expo), transform 0.7s var(--ease-out-expo);
+    will-change: opacity, transform;
 }
 
 .reveal.visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
 }
 
 /* ─── Responsive ─── */
@@ -1102,8 +1761,16 @@ body {
 }
 
 @media (max-width: 768px) {
+    html {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    body {
+        overscroll-behavior: none;
+    }
+
     #mainNav {
-        padding: 1rem 1.5rem;
+        padding: 0.75rem 1.25rem;
     }
 
     .nav-links, .nav-cta {
@@ -1115,41 +1782,156 @@ body {
     }
 
     .section-container {
-        padding: 0 1.5rem;
+        padding: 0 1.25rem;
     }
 
     .content-section {
-        padding: 5rem 0;
+        padding: 3.5rem 0;
+    }
+
+    .section-title {
+        font-size: clamp(1.6rem, 6vw, 2.5rem);
+        margin-bottom: 2.5rem;
     }
 
     .about-grid {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2rem;
+    }
+
+    .about-lead {
+        font-size: 1rem;
+    }
+
+    .about-text p:not(.about-lead) {
+        font-size: 0.88rem;
+    }
+
+    .value-card {
+        padding: 1.25rem;
+        gap: 1rem;
+    }
+
+    .value-icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .value-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .value-card p {
+        font-size: 0.8rem;
     }
 
     .services-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .service-card {
+        padding: 1.5rem;
+    }
+
+    .service-number {
+        font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .service-card h3 {
+        font-size: 1.2rem;
+    }
+
+    .service-card p {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+
+    .stats-section {
+        padding: 3.5rem 0;
     }
 
     .stats-grid {
         grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .stat-item {
+        padding: 1.25rem 0.75rem;
     }
 
     .stat-item::after {
         display: none !important;
     }
 
+    .stat-number {
+        font-size: clamp(2rem, 8vw, 3rem);
+    }
+
+    .stat-suffix {
+        font-size: clamp(1.2rem, 4vw, 2rem);
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+    }
+
+    .quote-section {
+        padding: 4rem 0;
+    }
+
+    .big-quote p {
+        font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+    }
+
     .contact-grid {
         grid-template-columns: 1fr;
-        gap: 3rem;
+        gap: 2.5rem;
+    }
+
+    .contact-item {
+        gap: 1rem;
+    }
+
+    .contact-icon {
+        width: 38px;
+        height: 38px;
+        padding: 8px;
+    }
+
+    .contact-item h4 {
+        font-size: 1rem;
+    }
+
+    .contact-item p {
+        font-size: 0.85rem;
     }
 
     .form-row {
         grid-template-columns: 1fr;
     }
 
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 0.85rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .form-submit {
+        width: 100%;
+        justify-content: center;
+        padding: 0.85rem 1.5rem;
+    }
+
     .footer-top {
         grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .footer-desc {
+        max-width: 100%;
     }
 
     .footer-bottom {
@@ -1158,24 +1940,250 @@ body {
         text-align: center;
     }
 
-    .scroll-container {
-        height: 400vh;
+    #footer {
+        padding: 3rem 0 1.5rem;
     }
-}
 
-@media (max-width: 480px) {
+    .scroll-container {
+        height: 350vh;
+    }
+
+    /* ─── Mobile Overlay Text Sizing ─── */
+    .canvas-wrapper {
+        height: 100vh;
+        height: 100dvh;
+    }
+
+    .overlay-text {
+        padding: 3.5rem 1.5rem 2rem;
+    }
+
     .phase-1 .overlay-logo {
+        font-size: clamp(2.8rem, 14vw, 5rem);
         letter-spacing: 0.3em;
         margin-right: -0.3em;
     }
 
+    .phase-1 .overlay-sub {
+        font-size: clamp(0.55rem, 2.2vw, 0.85rem);
+        letter-spacing: 0.35em;
+    }
+
+    .phase-1 .overlay-line {
+        width: 50px;
+        margin-top: 1.25rem;
+    }
+
+    .phase-2 .overlay-headline,
+    .phase-2 .overlay-headline-accent {
+        font-size: clamp(1.5rem, 6.5vw, 2.5rem);
+        line-height: 1.25;
+    }
+
+    .phase-3 .overlay-services-title {
+        font-size: clamp(1.3rem, 5.5vw, 2rem);
+        margin-bottom: 0.75rem;
+    }
+
     .phase-3 .overlay-services-list {
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.4rem;
+        font-size: clamp(0.75rem, 3vw, 1rem);
     }
 
     .phase-3 .dot {
         display: none;
+    }
+
+    .phase-4 .overlay-premium,
+    .phase-4 .overlay-premium-sub {
+        font-size: clamp(1.8rem, 7.5vw, 3rem);
+    }
+
+    .phase-5 .overlay-final-tagline {
+        font-size: clamp(1.3rem, 5.5vw, 2.2rem);
+        margin-bottom: 1.25rem;
+    }
+
+    .phase-5 .overlay-final-logo {
+        font-size: clamp(2.2rem, 10vw, 4rem);
+        letter-spacing: 0.3em;
+        margin-right: -0.3em;
+    }
+
+    .phase-5 .overlay-final-sub {
+        font-size: 0.65rem;
+        letter-spacing: 0.3em;
+    }
+
+    .scroll-indicator {
+        bottom: 1.5rem;
+    }
+
+    .scroll-mouse {
+        width: 18px;
+        height: 28px;
+    }
+
+    .scroll-indicator span {
+        font-size: 0.55rem;
+    }
+
+    /* Reduce animation complexity on mobile */
+    .reveal {
+        transform: translate3d(0, 20px, 0);
+        transition-duration: 0.5s;
+    }
+
+    .service-card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    .value-card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+
+    /* Nekretnine mobile */
+    .nek-ai-search-inner {
+        padding: 0.35rem 0.35rem 0.35rem 0.85rem;
+    }
+
+    .nek-ai-icon {
+        width: 22px;
+        height: 22px;
+    }
+
+    .nek-ai-input {
+        font-size: 0.85rem;
+        padding: 0.75rem 0.5rem;
+    }
+
+    .nek-ai-btn {
+        width: 42px;
+        height: 42px;
+    }
+
+    .nek-ai-tags {
+        gap: 0.4rem;
+    }
+
+    .nek-ai-tag {
+        font-size: 0.68rem;
+        padding: 0.4rem 0.7rem;
+    }
+
+    .nek-filters-row {
+        gap: 0.5rem;
+    }
+
+    .nek-filter-pill {
+        flex: 1;
+        min-width: calc(50% - 0.5rem);
+    }
+
+    .nek-filter-pill select {
+        font-size: 0.75rem;
+        width: 100%;
+    }
+
+    .nek-results-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+
+    .nek-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .nek-card-img {
+        height: 160px;
+    }
+
+    .nek-card-price {
+        font-size: 1.1rem;
+    }
+
+    .nek-card-rate {
+        font-size: 0.6rem;
+    }
+
+    .nek-card-location {
+        font-size: 0.8rem;
+    }
+
+    .nek-card-spec {
+        font-size: 0.65rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .nek-load-more {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-section {
+        padding: 2.5rem 0;
+    }
+
+    .section-container {
+        padding: 0 1rem;
+    }
+
+    .section-title {
+        font-size: clamp(1.4rem, 6vw, 2rem);
+        margin-bottom: 2rem;
+    }
+
+    .section-tag {
+        font-size: 0.6rem;
+        margin-bottom: 1rem;
+        padding-left: 2.25rem;
+    }
+
+    .section-tag::before {
+        width: 1.5rem;
+    }
+
+    .stats-grid {
+        gap: 0.5rem;
+    }
+
+    .stat-item {
+        padding: 1rem 0.5rem;
+    }
+
+    .service-card {
+        padding: 1.25rem;
+    }
+
+    .scroll-container {
+        height: 300vh;
+    }
+
+    .mobile-link {
+        font-size: 2rem;
+    }
+
+    .nek-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nek-filter-pill {
+        min-width: calc(50% - 0.35rem);
+    }
+
+    .nek-card-img {
+        height: 180px;
+    }
+
+    .nek-ai-input::placeholder {
+        font-size: 0.75rem;
     }
 }
 
