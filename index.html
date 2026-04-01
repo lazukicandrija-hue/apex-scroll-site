@@ -51,53 +51,33 @@
         <button class="mobile-cta">Zakažite razgovor</button>
     </div>
 
-    <!-- Scroll-Based Video Section -->
+    <!-- Hero Video Section -->
     <section id="hero">
-        <div class="scroll-container">
-            <div class="canvas-wrapper">
-                <canvas id="scrollCanvas"></canvas>
-                
-                <!-- Text Overlays -->
-                <div class="overlay-text phase-1" id="phase1">
-                    <div class="overlay-logo">APEX</div>
-                    <div class="overlay-sub">REAL ESTATE</div>
-                    <div class="overlay-line"></div>
-                </div>
+        <div class="hero-video-wrapper">
+            <video id="heroVideo" autoplay muted loop playsinline preload="auto" poster="pics/ezgif-frame-001.jpg">
+                <source src="video/hero-desktop.mp4" type="video/mp4" id="heroVideoSource">
+            </video>
+            <div class="hero-overlay"></div>
+            
+            <!-- Hero Content -->
+            <div class="hero-content">
+                <div class="hero-logo-text">APEX</div>
+                <div class="hero-logo-sub">REAL ESTATE</div>
+                <div class="hero-line"></div>
+                <h1 class="hero-headline">Premium nekretnine<br><span class="gold">za premium život.</span></h1>
+                <p class="hero-tagline">Novi Sad · Prodaja · Rentanje · Konsultacije</p>
+                <a href="#nekretnine" class="hero-cta">
+                    <span>Pogledajte ponudu</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+            </div>
 
-                <div class="overlay-text phase-2" id="phase2">
-                    <p class="overlay-headline">Novi Sad nije samo grad.</p>
-                    <p class="overlay-headline-accent">To Je Vaš Novi Početak.</p>
+            <!-- Scroll Indicator -->
+            <div class="scroll-indicator" id="scrollIndicator">
+                <div class="scroll-mouse">
+                    <div class="scroll-wheel"></div>
                 </div>
-
-                <div class="overlay-text phase-3" id="phase3">
-                    <p class="overlay-services-title">Novogradnja & Starogradnja</p>
-                    <div class="overlay-services-list">
-                        <span>Prodaja</span>
-                        <span class="dot">•</span>
-                        <span>Rentanje</span>
-                        <span class="dot">•</span>
-                        <span>Konsultacije</span>
-                    </div>
-                </div>
-
-                <div class="overlay-text phase-4" id="phase4">
-                    <p class="overlay-premium">Premium nekretnine</p>
-                    <p class="overlay-premium-sub">za premium život.</p>
-                </div>
-
-                <div class="overlay-text phase-5" id="phase5">
-                    <p class="overlay-final-tagline">Od ideje do Ključa.</p>
-                    <div class="overlay-final-logo">APEX</div>
-                    <div class="overlay-final-sub">REAL ESTATE · NOVI SAD</div>
-                </div>
-
-                <!-- Scroll Indicator -->
-                <div class="scroll-indicator" id="scrollIndicator">
-                    <div class="scroll-mouse">
-                        <div class="scroll-wheel"></div>
-                    </div>
-                    <span>Skrolujte nadole</span>
-                </div>
+                <span>Skrolujte nadole</span>
             </div>
         </div>
     </section>

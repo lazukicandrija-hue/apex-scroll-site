@@ -1,72 +1,63 @@
 /* ═══════════════════════════════════════════════════════
-   APEX REAL ESTATE — Scroll-Based Image Sequence Engine
+   APEX REAL ESTATE — Video Hero + Interactive Site
    ═══════════════════════════════════════════════════════ */
 
 (function () {
     'use strict';
 
+    // ─── Utility ───
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+
     // ─── Device Detection ───
     const isMobile = /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
         || window.innerWidth <= 768;
-    const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
 
-    // ─── Configuration ───
-    // Check if mobile vertical frames exist (pics-mobile/ folder)
-    const mobileFramesAvailable = true; // Vertical 9:16 frames in pics-mobile/
-    const CONFIG = {
-        totalFrames: 240,
-        // On mobile: every 3rd frame (80 frames), low-end: every 2nd (120), desktop: every frame (240)
-        frameStep: isMobile ? 3 : (isLowEnd ? 2 : 1),
-        imagePath: (isMobile && mobileFramesAvailable) ? 'pics-mobile/ezgif-frame-' : 'pics/ezgif-frame-',
-        imageExt: '.jpg',
-        batchSize: isMobile ? 6 : 15,
-        phases: [
-            { id: 'phase1', start: 0.00, end: 0.15 },
-            { id: 'phase2', start: 0.15, end: 0.33 },
-            { id: 'phase3', start: 0.33, end: 0.50 },
-            { id: 'phase4', start: 0.50, end: 0.75 },
-            { id: 'phase5', start: 0.75, end: 1.00 },
-        ],
-        fadeMargin: 0.05
-    };
+    // ─── Hero Video Setup ───
+    function setupHeroVideo() {
+        const video = $('#heroVideo');
+        const source = $('#heroVideoSource');
+        if (!video || !source) return;
 
-    // Calculate actual frames to load
-    const framesToLoad = [];
-    for (let i = 0; i < CONFIG.totalFrames; i += CONFIG.frameStep) {
-        framesToLoad.push(i);
+        // Switch to mobile video on phones
+        if (isMobile) {
+            source.src = 'video/hero-mobile.mp4';
+            video.poster = 'pics-mobile/ezgif-frame-001.jpg';
+            video.load();
+        }
+
+        // Hide preloader once video can play
+        const preloader = $('#preloader');
+        const hidePreloader = () => {
+            if (preloader) {
+                preloader.style.opacity = '0';
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                }, 600);
+            }
+        };
+
+        // Try to play — hide preloader when ready
+        video.addEventListener('canplay', hidePreloader, { once: true });
+
+        // Fallback: hide preloader after 2 seconds even if video is slow
+        setTimeout(hidePreloader, 2000);
+
+        // Hide scroll indicator on scroll
+        const scrollIndicator = $('#scrollIndicator');
+        if (scrollIndicator) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 100) {
+                    scrollIndicator.classList.add('hidden');
+                }
+            }, { passive: true });
+        }
     }
-    const actualFrameCount = framesToLoad.length;
 
-    // ─── State ───
-    const state = {
-        images: {},  // Map of frameIndex -> image
-        loadedCount: 0,
-        currentFrame: -1,
-        canvas: null,
-        ctx: null,
-        scrollContainer: null,
-        isReady: false,
-        rafId: null,
-        lastOverlayState: {},  // Track overlay states to minimize DOM writes
-        canvasWidth: 0,
-        canvasHeight: 0,
-        dpr: 1
-    };
-
-    // ─── DOM Elements (cached) ───
-    const $ = (sel) => document.querySelector(sel);
-    const $$ = (sel) => document.querySelectorAll(sel);
 
     // ─── Initialize ───
     function init() {
-        state.canvas = $('#scrollCanvas');
-        state.ctx = state.canvas.getContext('2d', { alpha: false }); // opaque context for perf
-        state.scrollContainer = $('.scroll-container');
-        state.dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 3);
-
-        resizeCanvas();
-        loadImages();
-        setupEventListeners();
+        setupHeroVideo();
         setupNavigation();
         setupScrollAnimations();
         setupContactForm();
@@ -74,335 +65,6 @@
         setupPropertyGrid();
     }
 
-    // ─── Canvas Sizing ───
-    function resizeCanvas() {
-        const dpr = state.dpr;
-        // Use visualViewport for accurate mobile dimensions (handles address bar)
-        const vv = window.visualViewport;
-        const w = (vv && isMobile) ? vv.width : window.innerWidth;
-        const h = (vv && isMobile) ? vv.height : window.innerHeight;
-
-        // Only resize if dimensions actually changed
-        if (state.canvasWidth === w && state.canvasHeight === h) return;
-
-        state.canvasWidth = w;
-        state.canvasHeight = h;
-
-        state.canvas.width = w * dpr;
-        state.canvas.height = h * dpr;
-        state.canvas.style.width = w + 'px';
-        state.canvas.style.height = h + 'px';
-
-        // Reset transform and scale
-        state.ctx.setTransform(1, 0, 0, 1, 0, 0);
-        state.ctx.scale(dpr, dpr);
-
-        // Re-draw current frame
-        if (state.currentFrame >= 0 && state.images[state.currentFrame]) {
-            drawFrame(state.currentFrame);
-        }
-    }
-
-    // ─── Image Loading ───
-    function loadImages() {
-        const preloader = $('#preloader');
-        const progressBar = $('#preloaderProgress');
-        const progressText = $('#preloaderText');
-
-        // Priority loading: key frames first for instant visual feedback
-        const priorityIndices = [0, 1, 2, 3, 4];
-        // Add key positions
-        const keyPositions = [
-            Math.floor(actualFrameCount * 0.25),
-            Math.floor(actualFrameCount * 0.5),
-            Math.floor(actualFrameCount * 0.75),
-            actualFrameCount - 1
-        ];
-        keyPositions.forEach(pos => {
-            if (!priorityIndices.includes(pos)) priorityIndices.push(pos);
-        });
-
-        const priorityFrames = priorityIndices.map(i => framesToLoad[Math.min(i, framesToLoad.length - 1)]);
-        const remainingFrames = framesToLoad.filter(f => !priorityFrames.includes(f));
-        const allFrames = [...priorityFrames, ...remainingFrames];
-
-        let loaded = 0;
-        let nextToQueue = 0;
-
-        function onImageDone(frameIndex, img) {
-            if (img) {
-                state.images[frameIndex] = img;
-            }
-            loaded++;
-            state.loadedCount = loaded;
-
-            const pct = Math.min(100, Math.round((loaded / allFrames.length) * 100));
-            progressBar.style.width = pct + '%';
-            progressText.textContent = `Učitavanje... ${pct}%`;
-
-            // Draw first frame immediately
-            if (frameIndex === 0 && state.currentFrame < 0) {
-                state.currentFrame = 0;
-                drawFrame(0);
-            }
-
-            // Hide preloader when enough frames loaded (60% for mobile, 70% for desktop)
-            const threshold = isMobile ? 0.4 : 0.7;
-            if (loaded >= allFrames.length * threshold && !state.isReady) {
-                state.isReady = true;
-                setTimeout(() => {
-                    preloader.classList.add('hidden');
-                    document.body.style.overflow = '';
-                }, 300);
-                startScrollListener();
-            }
-
-            loadNextFromQueue();
-        }
-
-        function loadNextFromQueue() {
-            if (nextToQueue >= allFrames.length) return;
-
-            const idx = nextToQueue;
-            nextToQueue++;
-
-            const frameIndex = allFrames[idx];
-            const img = new Image();
-            const num = String(frameIndex + 1).padStart(3, '0');
-
-            // Use smaller images on mobile if available, otherwise use standard
-            img.src = `${CONFIG.imagePath}${num}${CONFIG.imageExt}`;
-
-            // Decode asynchronously for smoother rendering
-            img.onload = () => {
-                if (img.decode) {
-                    img.decode().then(() => onImageDone(frameIndex, img)).catch(() => onImageDone(frameIndex, img));
-                } else {
-                    onImageDone(frameIndex, img);
-                }
-            };
-            img.onerror = () => onImageDone(frameIndex, null);
-        }
-
-        // Prevent scroll during loading
-        document.body.style.overflow = 'hidden';
-
-        // Start concurrent loading pool
-        const concurrency = Math.min(CONFIG.batchSize, allFrames.length);
-        for (let i = 0; i < concurrency; i++) {
-            loadNextFromQueue();
-        }
-    }
-
-    // ─── Find Nearest Loaded Frame ───
-    function findNearestFrame(targetFrame) {
-        // If we have this exact frame, use it
-        if (state.images[targetFrame]) return targetFrame;
-
-        // Find the nearest loaded frame
-        let bestFrame = 0;
-        let bestDist = Infinity;
-
-        for (const key of Object.keys(state.images)) {
-            const idx = parseInt(key);
-            const dist = Math.abs(idx - targetFrame);
-            if (dist < bestDist) {
-                bestDist = dist;
-                bestFrame = idx;
-            }
-        }
-        return bestFrame;
-    }
-
-    // ─── Draw Frame ───
-    function drawFrame(frameIndex) {
-        // Find nearest loaded frame
-        const actualFrame = findNearestFrame(frameIndex);
-        const img = state.images[actualFrame];
-        
-        const ctx = state.ctx;
-        const cw = state.canvasWidth;
-        const ch = state.canvasHeight;
-
-        // If no image found, fill with dark background instead of showing black
-        if (!img) {
-            ctx.fillStyle = '#0A0A0A';
-            ctx.fillRect(0, 0, cw, ch);
-            return;
-        }
-
-        // Cover fit (like background-size: cover)
-        const imgRatio = img.naturalWidth / img.naturalHeight;
-        const canvasRatio = cw / ch;
-
-        let drawW, drawH, dx, dy;
-
-        if (canvasRatio > imgRatio) {
-            drawW = cw;
-            drawH = cw / imgRatio;
-            dx = 0;
-            dy = (ch - drawH) / 2;
-        } else {
-            drawH = ch;
-            drawW = ch * imgRatio;
-            dx = (cw - drawW) / 2;
-            dy = 0;
-        }
-
-        ctx.drawImage(img, dx, dy, drawW, drawH);
-        state.lastDrawnFrame = actualFrame;
-    }
-
-    // ─── Scroll Listener (Optimized) ───
-    function startScrollListener() {
-        let ticking = false;
-        let lastScrollY = -1;
-
-        function onScroll() {
-            const scrollY = window.scrollY || window.pageYOffset;
-
-            // Skip if scroll position hasn't changed enough (> 1px)
-            if (Math.abs(scrollY - lastScrollY) < 1) {
-                ticking = false;
-                return;
-            }
-            lastScrollY = scrollY;
-
-            const rect = state.scrollContainer.getBoundingClientRect();
-            const scrollHeight = state.scrollContainer.offsetHeight - window.innerHeight;
-            const scrollTop = -rect.top;
-
-            // Calculate scroll progress (0 to 1)
-            let progress = Math.max(0, Math.min(1, scrollTop / scrollHeight));
-
-            // Map progress to frame
-            const frameIndex = Math.min(
-                CONFIG.totalFrames - 1,
-                Math.floor(progress * CONFIG.totalFrames)
-            );
-
-            if (frameIndex !== state.currentFrame) {
-                state.currentFrame = frameIndex;
-                drawFrame(frameIndex);
-            }
-
-            // Update text overlays (batched)
-            updateOverlays(progress);
-
-            // Update scroll indicator
-            const scrollIndicator = $('#scrollIndicator');
-            if (scrollIndicator) {
-                const shouldHide = progress > 0.05;
-                if (shouldHide && !scrollIndicator.classList.contains('hidden')) {
-                    scrollIndicator.classList.add('hidden');
-                } else if (!shouldHide && scrollIndicator.classList.contains('hidden')) {
-                    scrollIndicator.classList.remove('hidden');
-                }
-            }
-
-            // Update nav style
-            const nav = $('#mainNav');
-            const shouldScroll = progress > 0.95 || scrollTop > scrollHeight;
-            if (shouldScroll && !nav.classList.contains('scrolled')) {
-                nav.classList.add('scrolled');
-            } else if (!shouldScroll && nav.classList.contains('scrolled')) {
-                nav.classList.remove('scrolled');
-            }
-
-            ticking = false;
-        }
-
-        // Use passive scroll listener with rAF for buttery-smooth updates
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(onScroll);
-                ticking = true;
-            }
-        }, { passive: true });
-
-        // Handle touch events better on mobile
-        if (isMobile) {
-            // Prevent overscroll bounce on iOS
-            document.body.style.overscrollBehavior = 'none';
-        }
-
-        // Initial call
-        onScroll();
-    }
-
-    // ─── Update Text Overlays (Minimized DOM writes) ───
-    function updateOverlays(progress) {
-        CONFIG.phases.forEach(phase => {
-            const el = document.getElementById(phase.id);
-            if (!el) return;
-
-            const fadeIn = phase.start;
-            const fadeOut = phase.end;
-            const margin = CONFIG.fadeMargin;
-
-            // Calculate opacity
-            let opacity = 0;
-
-            if (progress >= fadeIn && progress <= fadeOut) {
-                if (progress < fadeIn + margin) {
-                    opacity = (progress - fadeIn) / margin;
-                } else if (progress > fadeOut - margin) {
-                    opacity = (fadeOut - progress) / margin;
-                } else {
-                    opacity = 1;
-                }
-            }
-
-            opacity = Math.max(0, Math.min(1, opacity));
-
-            // Only update DOM if state actually changed
-            const prevState = state.lastOverlayState[phase.id];
-            const isVisible = opacity > 0.01;
-            const roundedOpacity = Math.round(opacity * 100) / 100;
-
-            if (prevState &&
-                prevState.visible === isVisible &&
-                prevState.opacity === roundedOpacity) {
-                return; // Skip DOM update
-            }
-
-            state.lastOverlayState[phase.id] = { visible: isVisible, opacity: roundedOpacity };
-
-            if (isVisible) {
-                if (!el.classList.contains('visible')) el.classList.add('visible');
-                // Use transform for GPU-accelerated animation
-                const translateY = (1 - opacity) * 15; // Reduced movement for less jank
-                el.style.cssText = `opacity:${roundedOpacity};transform:translate3d(0,${translateY}px,0)`;
-            } else {
-                if (el.classList.contains('visible')) el.classList.remove('visible');
-                el.style.cssText = 'opacity:0;transform:translate3d(0,0,0)';
-            }
-        });
-    }
-
-    // ─── Event Listeners ───
-    function setupEventListeners() {
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                resizeCanvas();
-            }, 150);
-        }, { passive: true });
-
-        // Handle orientation change specifically
-        window.addEventListener('orientationchange', () => {
-            setTimeout(resizeCanvas, 200);
-        }, { passive: true });
-
-        // Handle mobile address bar show/hide via visualViewport
-        if (window.visualViewport && isMobile) {
-            window.visualViewport.addEventListener('resize', () => {
-                clearTimeout(resizeTimeout);
-                resizeTimeout = setTimeout(resizeCanvas, 100);
-            }, { passive: true });
-        }
-    }
 
     // ─── Navigation ───
     function setupNavigation() {
