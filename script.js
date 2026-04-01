@@ -11,13 +11,15 @@
     const isLowEnd = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
 
     // ─── Configuration ───
+    // Check if mobile vertical frames exist (pics-mobile/ folder)
+    const mobileFramesAvailable = false; // Set to true when vertical frames are added
     const CONFIG = {
         totalFrames: 240,
-        // On mobile/low-end devices, load every 2nd frame (120 frames) for faster loading
-        frameStep: (isMobile || isLowEnd) ? 2 : 1,
-        imagePath: 'pics/ezgif-frame-',
+        // On mobile: every 3rd frame (80 frames), low-end: every 2nd (120), desktop: every frame (240)
+        frameStep: isMobile ? 3 : (isLowEnd ? 2 : 1),
+        imagePath: (isMobile && mobileFramesAvailable) ? 'pics-mobile/ezgif-frame-' : 'pics/ezgif-frame-',
         imageExt: '.jpg',
-        batchSize: isMobile ? 8 : 15,
+        batchSize: isMobile ? 6 : 15,
         phases: [
             { id: 'phase1', start: 0.00, end: 0.15 },
             { id: 'phase2', start: 0.15, end: 0.33 },
@@ -60,7 +62,7 @@
         state.canvas = $('#scrollCanvas');
         state.ctx = state.canvas.getContext('2d', { alpha: false }); // opaque context for perf
         state.scrollContainer = $('.scroll-container');
-        state.dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 2 : 3);
+        state.dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 3);
 
         resizeCanvas();
         loadImages();
@@ -145,7 +147,7 @@
             }
 
             // Hide preloader when enough frames loaded (60% for mobile, 70% for desktop)
-            const threshold = isMobile ? 0.6 : 0.7;
+            const threshold = isMobile ? 0.4 : 0.7;
             if (loaded >= allFrames.length * threshold && !state.isReady) {
                 state.isReady = true;
                 setTimeout(() => {
@@ -217,11 +219,17 @@
         // Find nearest loaded frame
         const actualFrame = findNearestFrame(frameIndex);
         const img = state.images[actualFrame];
-        if (!img) return;
-
+        
         const ctx = state.ctx;
         const cw = state.canvasWidth;
         const ch = state.canvasHeight;
+
+        // If no image found, fill with dark background instead of showing black
+        if (!img) {
+            ctx.fillStyle = '#0A0A0A';
+            ctx.fillRect(0, 0, cw, ch);
+            return;
+        }
 
         // Cover fit (like background-size: cover)
         const imgRatio = img.naturalWidth / img.naturalHeight;
@@ -242,6 +250,7 @@
         }
 
         ctx.drawImage(img, dx, dy, drawW, drawH);
+        state.lastDrawnFrame = actualFrame;
     }
 
     // ─── Scroll Listener (Optimized) ───
