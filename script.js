@@ -12,7 +12,7 @@
 
     // ─── Configuration ───
     // Check if mobile vertical frames exist (pics-mobile/ folder)
-    const mobileFramesAvailable = false; // Set to true when vertical frames are added
+    const mobileFramesAvailable = true; // Vertical 9:16 frames in pics-mobile/
     const CONFIG = {
         totalFrames: 240,
         // On mobile: every 3rd frame (80 frames), low-end: every 2nd (120), desktop: every frame (240)
