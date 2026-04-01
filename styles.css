@@ -1877,6 +1877,22 @@ body {
     }
 
 
+    /* Hero video: ensure full video visible on mobile so key scene isn't cropped */
+    #hero {
+        background: var(--black);
+    }
+
+    #heroVideo {
+        object-fit: contain;
+        object-position: center center;
+        background: var(--black);
+        transform: scale(1.12);
+    }
+
+    .hero-content {
+        bottom: 8%;
+    }
+
     .scroll-indicator {
         bottom: 1.5rem;
     }
