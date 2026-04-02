@@ -26,22 +26,75 @@
             video.load();
         }
 
-        // Hide preloader once video can play
+        // Android-specific video attributes
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        video.setAttribute('x5-playsinline', '');
+        video.setAttribute('x5-video-player-type', 'h5');
+        video.muted = true;
+        video.playsInline = true;
+
+        // Hide preloader
         const preloader = $('#preloader');
+        let preloaderHidden = false;
+
         const hidePreloader = () => {
+            if (preloaderHidden) return;
+            preloaderHidden = true;
             if (preloader) {
                 preloader.style.opacity = '0';
                 setTimeout(() => {
                     preloader.style.display = 'none';
+                    preloader.classList.add('hidden');
                 }, 600);
             }
         };
 
         // Try to play — hide preloader when ready
         video.addEventListener('canplay', hidePreloader, { once: true });
+        video.addEventListener('loadeddata', hidePreloader, { once: true });
+        video.addEventListener('playing', hidePreloader, { once: true });
 
-        // Fallback: hide preloader after 2 seconds even if video is slow
-        setTimeout(hidePreloader, 2000);
+        // Explicit play for Android (promise-based)
+        function tryPlay() {
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    hidePreloader();
+                }).catch((err) => {
+                    console.log('Autoplay prevented:', err);
+                    // On Android, autoplay might be blocked even with muted
+                    // Make video muted again and retry
+                    video.muted = true;
+                    video.play().then(hidePreloader).catch(() => {
+                        // Final fallback: show poster, hide preloader
+                        hidePreloader();
+                    });
+                });
+            }
+        }
+
+        // Try playing when data is ready
+        if (video.readyState >= 2) {
+            tryPlay();
+        } else {
+            video.addEventListener('loadeddata', tryPlay, { once: true });
+        }
+
+        // Fallback: hide preloader after 3 seconds no matter what
+        setTimeout(hidePreloader, 3000);
+
+        // Android: some browsers need user interaction — listen for first touch
+        const startOnTouch = () => {
+            if (video.paused) {
+                video.muted = true;
+                video.play().catch(() => {});
+            }
+            document.removeEventListener('touchstart', startOnTouch);
+            document.removeEventListener('click', startOnTouch);
+        };
+        document.addEventListener('touchstart', startOnTouch, { passive: true, once: true });
+        document.addEventListener('click', startOnTouch, { once: true });
 
         // Hide scroll indicator on scroll
         const scrollIndicator = $('#scrollIndicator');
@@ -50,6 +103,21 @@
                 if (window.scrollY > 100) {
                     scrollIndicator.classList.add('hidden');
                 }
+            }, { passive: true });
+        }
+
+        // Nav scroll state (works reliably on Android)
+        const nav = $('#mainNav');
+        if (nav) {
+            let lastScroll = 0;
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.scrollY || window.pageYOffset;
+                if (currentScroll > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+                lastScroll = currentScroll;
             }, { passive: true });
         }
     }
