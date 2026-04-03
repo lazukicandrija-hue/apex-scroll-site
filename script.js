@@ -17,12 +17,16 @@
     function setupHeroVideo() {
         const video = $('#heroVideo');
         const source = $('#heroVideoSource');
+        const poster = $('#heroPoster');
         if (!video || !source) return;
 
-        // Switch to mobile video on phones
+        // Switch to mobile video + poster on phones
         if (isMobile) {
             source.src = 'video/hero-mobile.mp4';
             video.poster = 'pics-mobile/ezgif-frame-001.jpg';
+            if (poster) poster.src = 'pics-mobile/ezgif-frame-001.jpg';
+            // Use lighter preload on mobile to speed up initial render
+            video.preload = 'metadata';
             video.load();
         }
 
@@ -50,26 +54,40 @@
             }
         };
 
+        // Mark video as playing (allows CSS to manage poster/video layering)
+        function onVideoPlaying() {
+            video.classList.add('playing');
+            hidePreloader();
+        }
+
         // Try to play — hide preloader when ready
         video.addEventListener('canplay', hidePreloader, { once: true });
         video.addEventListener('loadeddata', hidePreloader, { once: true });
-        video.addEventListener('playing', hidePreloader, { once: true });
+        video.addEventListener('playing', onVideoPlaying, { once: true });
 
-        // Explicit play for Android (promise-based)
+        // Explicit play for mobile (promise-based with retries)
+        let playAttempts = 0;
+        const MAX_PLAY_ATTEMPTS = 3;
+
         function tryPlay() {
+            playAttempts++;
+            video.muted = true; // Always ensure muted for autoplay policy
+
             const playPromise = video.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
-                    hidePreloader();
+                    onVideoPlaying();
                 }).catch((err) => {
-                    console.log('Autoplay prevented:', err);
-                    // On Android, autoplay might be blocked even with muted
-                    // Make video muted again and retry
-                    video.muted = true;
-                    video.play().then(hidePreloader).catch(() => {
-                        // Final fallback: show poster, hide preloader
+                    console.log(`Autoplay attempt ${playAttempts} prevented:`, err.message);
+                    
+                    if (playAttempts < MAX_PLAY_ATTEMPTS) {
+                        // Retry after a short delay
+                        setTimeout(tryPlay, 500 * playAttempts);
+                    } else {
+                        // All attempts failed — poster image is already visible as fallback
+                        console.log('Video autoplay not available — showing poster fallback');
                         hidePreloader();
-                    });
+                    }
                 });
             }
         }
@@ -79,16 +97,24 @@
             tryPlay();
         } else {
             video.addEventListener('loadeddata', tryPlay, { once: true });
+            // Also try on canplay in case loadeddata already fired
+            video.addEventListener('canplay', () => {
+                if (!video.classList.contains('playing') && playAttempts === 0) {
+                    tryPlay();
+                }
+            }, { once: true });
         }
 
         // Fallback: hide preloader after 3 seconds no matter what
         setTimeout(hidePreloader, 3000);
 
-        // Android: some browsers need user interaction — listen for first touch
+        // Mobile: some browsers need user interaction — listen for first touch
         const startOnTouch = () => {
             if (video.paused) {
                 video.muted = true;
-                video.play().catch(() => {});
+                video.play().then(() => {
+                    video.classList.add('playing');
+                }).catch(() => {});
             }
             document.removeEventListener('touchstart', startOnTouch);
             document.removeEventListener('click', startOnTouch);
